@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metro Manila Air Pollution Risk Assessment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-wind"></i>
+                </div>
+                <div class="header-text">
+                    <h1>Metro Manila Air Pollution Risk Assessment</h1>
+                    <p>Real-time air quality monitoring and health risk prediction</p>
+                </div>
+            </div>
+            <div class="model-info">
+                <div class="accuracy" id="modelAccuracy">Loading...</div>
+                <div class="label">Model Accuracy</div>
+            </div>
+        </header>
+
+        <div class="alert" id="apiAlert"></div>
+
+        <div class="main-content">
+            <!-- Left Column: Prediction Interface -->
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-calculator"></i> Risk Prediction</h2>
+                
+                <div class="location-selector">
+                    <label for="location">Select Location:</label>
+                    <select id="location">
+                        <option value="Metro Manila">Metro Manila (General)</option>
+                        <option value="Quezon City">Quezon City</option>
+                        <option value="Manila">Manila</option>
+                        <option value="Makati">Makati</option>
+                        <option value="Pasig">Pasig</option>
+                        <option value="Taguig">Taguig</option>
+                        <option value="Parañaque">Parañaque</option>
+                        <option value="Las Piñas">Las Piñas</option>
+                        <option value="Muntinlupa">Muntinlupa</option>
+                        <option value="Marikina">Marikina</option>
+                        <option value="Mandaluyong">Mandaluyong</option>
+                        <option value="San Juan">San Juan</option>
+                        <option value="Caloocan">Caloocan</option>
+                        <option value="Malabon">Malabon</option>
+                        <option value="Navotas">Navotas</option>
+                        <option value="Valenzuela">Valenzuela</option>
+                        <option value="Pasay">Pasay</option>
+                        <option value="Pateros">Pateros</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pm25">PM2.5 (μg/m³) <span class="unit">[0-500]</span></label>
+                        <div class="slider-container">
+                            <input type="range" id="pm25" min="0" max="500" value="25" step="0.1">
+                            <div class="slider-value" id="pm25Value">25.0</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pm10">PM10 (μg/m³) <span class="unit">[0-1000]</span></label>
+                        <div class="slider-container">
+                            <input type="range" id="pm10" min="0" max="1000" value="50" step="0.1">
+                            <div class="slider-value" id="pm10Value">50.0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="no2">NO₂ (ppb) <span class="unit">[0-500]</span></label>
+                        <div class="slider-container">
+                            <input type="range" id="no2" min="0" max="500" value="30" step="0.1">
+                            <div class="slider-value" id="no2Value">30.0</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="so2">SO₂ (ppb) <span class="unit">[0-500]</span></label>
+                        <div class="slider-container">
+                            <input type="range" id="so2" min="0" max="500" value="10" step="0.1">
+                            <div class="slider-value" id="so2Value">10.0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="co">CO (ppm) <span class="unit">[0-50]</span></label>
+                        <div class="slider-container">
+                            <input type="range" id="co" min="0" max="50" value="1.5" step="0.1">
+                            <div class="slider-value" id="coValue">1.5</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="o3">O₃ (ppb) <span class="unit">[0-500]</span></label>
+                        <div class="slider-container">
+                            <input type="range" id="o3" min="0" max="500" value="40" step="0.1">
+                            <div class="slider-value" id="o3Value">40.0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="temperature">Temperature (°C) <span class="unit">[0-50]</span></label>
+                        <div class="slider-container">
+                            <input type="range" id="temperature" min="0" max="50" value="28" step="0.1">
+                            <div class="slider-value" id="temperatureValue">28.0</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="humidity">Humidity (%) <span class="unit">[0-100]</span></label>
+                        <div class="slider-container">
+                            <input type="range" id="humidity" min="0" max="100" value="65" step="0.1">
+                            <div class="slider-value" id="humidityValue">65.0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn btn-primary" onclick="predictRisk()">
+                        <i class="fas fa-bolt"></i> Predict Risk Level
+                    </button>
+                    <button class="btn btn-secondary" onclick="resetForm()">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                </div>
+
+                <div class="spinner" id="loadingSpinner">
+                    <i class="fas fa-spinner"></i>
+                    <p>Analyzing air quality data...</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Results Display -->
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-chart-line"></i> Risk Assessment Results</h2>
+                
+                <div id="resultsContainer" class="results-container">
+                    <div class="risk-level-display" id="riskDisplay">
+                        <h3 class="risk-title" id="riskTitle">
+                            <i class="fas fa-exclamation-triangle"></i> <span id="riskLevelText">Moderate Risk</span>
+                        </h3>
+                        <p class="risk-confidence">Confidence: <span id="confidenceValue">95.2%</span></p>
+                        <div class="aqi-display">
+                            AQI: <span id="aqiValue">78</span> | <span id="aqiCategory">Moderate</span>
+                        </div>
+                    </div>
+
+                    <div class="parameter-summary">
+                        <div class="param-item">
+                            <div class="param-value" id="dispPm25">25.0</div>
+                            <div class="param-label">PM2.5</div>
+                        </div>
+                        <div class="param-item">
+                            <div class="param-value" id="dispPm10">50.0</div>
+                            <div class="param-label">PM10</div>
+                        </div>
+                        <div class="param-item">
+                            <div class="param-value" id="dispNo2">30.0</div>
+                            <div class="param-label">NO₂</div>
+                        </div>
+                        <div class="param-item">
+                            <div class="param-value" id="dispSo2">10.0</div>
+                            <div class="param-label">SO₂</div>
+                        </div>
+                    </div>
+
+                    <h4 style="margin: 25px 0 15px 0;">Prediction Probabilities</h4>
+                    <div class="probabilities">
+                        <div class="probability-item prob-low">
+                            <div class="prob-label">Low Risk</div>
+                            <div class="prob-value" id="probLow">30.5%</div>
+                        </div>
+                        <div class="probability-item prob-moderate">
+                            <div class="prob-label">Moderate Risk</div>
+                            <div class="prob-value" id="probModerate">65.2%</div>
+                        </div>
+                        <div class="probability-item prob-high">
+                            <div class="prob-label">High Risk</div>
+                            <div class="prob-value" id="probHigh">4.3%</div>
+                        </div>
+                    </div>
+
+                    <div class="recommendations">
+                        <h4 style="margin-bottom: 20px;"><i class="fas fa-clipboard-list"></i> Recommendations</h4>
+                        
+                        <div class="recommendation-category">
+                            <h4><i class="fas fa-users"></i> General Population</h4>
+                            <ul id="generalRecs">
+                                <li>Air quality is acceptable</li>
+                                <li>Unusually sensitive people should consider reducing prolonged outdoor exertion</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="recommendation-category">
+                            <h4><i class="fas fa-heartbeat"></i> Sensitive Groups</h4>
+                            <ul id="sensitiveRecs">
+                                <li>Children, elderly, and people with respiratory conditions</li>
+                                <li>Consider reducing strenuous outdoor activities</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="recommendation-category">
+                            <h4><i class="fas fa-tasks"></i> Actions</h4>
+                            <ul id="actionRecs">
+                                <li>Reduce vehicle idling</li>
+                                <li>Limit outdoor burning</li>
+                                <li>Use public transportation when possible</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="noResultsMessage" style="text-align: center; padding: 40px 20px; color: #777;">
+                    <i class="fas fa-chart-bar" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.3;"></i>
+                    <h3>No Prediction Yet</h3>
+                    <p>Adjust the parameters and click "Predict Risk Level" to see results</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-chart-pie"></i> Risk Distribution</h2>
+                <div class="chart-container">
+                    <canvas id="riskDistributionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-chart-area"></i> Monthly Trends</h2>
+                <div class="chart-container">
+                    <canvas id="monthlyTrendsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Metro Manila Air Pollution Risk Assessment System | Powered by Machine Learning</p>
+            <p>Model trained on real air quality data | API Status: <span id="apiStatus">Checking...</span></p>
+            <p>© 2025 Environmental Monitoring System | For demonstration purposes</p>
+        </footer>
+    </div>
+   <script src="script.js"></script>
+</body>
+</html>
