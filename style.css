@@ -1,4 +1,4 @@
-/* styles.css - Complete CSS for Air Pollution Assessment */
+/* style.css - Updated with AQI comparison graph styles */
 
 * {
     margin: 0;
@@ -63,7 +63,7 @@ header {
 .model-info .accuracy {
     font-size: 1.8rem;
     font-weight: 700;
-    color: #00ff88;
+    color: #f9d423;
 }
 
 .model-info .label {
@@ -112,7 +112,7 @@ header {
     color: #3498db;
 }
 
-/* Prediction Form Styles */
+/* Form Styles */
 .form-group {
     margin-bottom: 20px;
 }
@@ -124,59 +124,113 @@ header {
     color: #555;
 }
 
-.slider-container {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.location-selector {
+    margin-bottom: 25px;
 }
 
-.slider-container input[type="range"] {
-    flex: 1;
-    height: 10px;
-    -webkit-appearance: none;
-    background: linear-gradient(to right, #00c9ff, #92fe9d);
-    border-radius: 5px;
-    outline: none;
+.location-selector label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
 }
 
-.slider-container input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 22px;
-    height: 22px;
-    background: #3498db;
-    border-radius: 50%;
+.location-selector select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+    color: #333;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.slider-value {
-    min-width: 50px;
-    padding: 5px 10px;
-    background: #f8f9fa;
-    border-radius: 5px;
-    text-align: center;
-    font-weight: 600;
-    color: #2c3e50;
-    border: 1px solid #e0e0e0;
+.location-selector select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
-.unit {
-    color: #777;
-    font-size: 0.9rem;
-}
-
-.form-row {
+/* Data Grid */
+.data-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
 }
 
 @media (max-width: 768px) {
-    .form-row {
+    .data-grid {
         grid-template-columns: 1fr;
     }
 }
 
+.data-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+    transition: transform 0.2s ease;
+}
+
+.data-item:hover {
+    transform: translateY(-2px);
+}
+
+.data-label {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.data-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.data-status {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.status-good {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-moderate {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-poor {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.dataset-info {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border-left: 3px solid #3498db;
+}
+
+.dataset-info i {
+    color: #3498db;
+}
+
+/* Buttons */
 .buttons {
     display: flex;
     gap: 15px;
@@ -223,6 +277,13 @@ header {
     background: #e9ecef;
 }
 
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 /* Results Display */
 .results-container {
     display: none;
@@ -235,6 +296,12 @@ header {
     margin-bottom: 25px;
     color: white;
     transition: all 0.5s ease;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .risk-low {
@@ -319,6 +386,12 @@ header {
     padding: 18px;
     border-radius: 10px;
     border-left: 5px solid #3498db;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
 .recommendation-category h4 {
@@ -336,30 +409,43 @@ header {
 .recommendation-category li {
     margin-bottom: 8px;
     color: #555;
+    line-height: 1.5;
 }
 
-/* Charts Section */
-.charts-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 30px;
+/* Graph Section */
+.graph-section {
     margin-bottom: 30px;
 }
 
-@media (max-width: 500px) {
-    .charts-section {
-        grid-template-columns: 1fr;
-    }
+.graph-section .card {
+    padding: 25px;
 }
 
 .chart-container {
-    height: 300px;
+    height: 400px;
     position: relative;
+    margin: 20px 0;
+}
+
+.chart-note {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border-left: 3px solid #3498db;
+}
+
+.chart-note i {
+    color: #3498db;
 }
 
 /* Loading Spinner */
 .spinner {
-    display: none;
     text-align: center;
     padding: 30px;
 }
@@ -385,12 +471,17 @@ footer {
     margin-top: 30px;
 }
 
+footer p {
+    margin-bottom: 5px;
+}
+
 /* Alert Messages */
 .alert {
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px;
     display: none;
+    animation: fadeIn 0.3s ease;
 }
 
 .alert-success {
@@ -405,58 +496,32 @@ footer {
     border-left: 5px solid #dc3545;
 }
 
-/* Parameter Summary */
-.parameter-summary {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-    padding: 15px;
+/* Prediction Header */
+.prediction-header {
     background: #f8f9fa;
+    padding: 15px;
     border-radius: 10px;
-}
-
-.param-item {
-    text-align: center;
-    padding: 10px;
-}
-
-.param-value {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: #2c3e50;
-}
-
-.param-label {
-    font-size: 0.8rem;
-    color: #777;
-    margin-top: 5px;
-}
-
-/* Location Selector */
-.location-selector {
     margin-bottom: 20px;
 }
 
-.location-selector select {
-    width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    background: white;
-    color: #333;
+.location-info h3 {
+    color: #2c3e50;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-/* Additional styles for static version */
-.api-status {
-    font-weight: bold;
+.timestamp {
+    color: #666;
+    font-size: 0.9rem;
 }
 
-.static-mode {
-    color: #00b09b;
-}
-
-.offline-mode {
-    color: #f9d423;
+/* Dataset Comparison */
+.dataset-comparison {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 0.9rem;
 }
